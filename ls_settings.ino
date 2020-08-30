@@ -1073,7 +1073,7 @@ void configureStandardMpeExpression(byte split) {
   Split[split].customCCForY = 74;
   Split[split].expressionForZ = loudnessChannelPressure;
 
-  midiSendMpePitchBendRange(split);
+  midiSendPitchBendRange(split);
 }
 
 void enableMpe(byte split, byte mainChannel, byte polyphony) {
@@ -1168,6 +1168,7 @@ void handlePerSplitSettingNewTouch() {
             Split[Global.currentPerSplit].midiChanPerRowReversed = false;
           }
           updateSplitMidiChannels(Global.currentPerSplit);
+          midiSendPitchBendRange(Global.currentPerSplit);
           break;
       }
       break;
@@ -1194,6 +1195,7 @@ void handlePerSplitSettingNewTouch() {
         // Channels in column 3 are 1,5,9,13, column 4 are 2,6,10,14, column 5 are 3,7,11,15, and column 6 are 4,8,12,16
         byte chan = (7 - sensorRow) * 4 + sensorCol - 2;    // this value should be from 1 to 16
         toggleChannel(chan);
+        midiSendPitchBendRange(Global.currentPerSplit);
       }
       break;
 
@@ -1213,6 +1215,7 @@ void handlePerSplitSettingNewTouch() {
           Split[Global.currentPerSplit].bendRangeOption = bendRange24;
           break;
       }
+      midiSendPitchBendRange(Global.currentPerSplit);
       break;
 
     // Pitch/X settings

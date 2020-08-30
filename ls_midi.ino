@@ -2833,9 +2833,24 @@ void midiSendMpeState(byte mainChannel, byte polyphony) {
   midiSendRPN(6, polyphony << 7, mainChannel);
 }
 
-void midiSendMpePitchBendRange(byte split) {
-  if (Split[split].mpe && getBendRange(split) == 24) {
-    midiSendRPN(0, 24 << 7, Split[split].midiChanMain);
+void midiSendPitchBendRange(byte split) {
+  unsigned short br = getBendRange(split) << 7;
+  switch (Split[split].midiMode) {
+    case oneChannel:
+    {
+      midiSendRPN(0, br, Split[split].midiChanMain);
+      break;
+    }
+    case channelPerNote:
+    case channelPerRow:
+    {
+      for (byte ch = 0; ch < 16; ++ch) {
+        if (Split[split].midiChanSet[ch]) {
+          midiSendRPN(0, br, ch+1);
+        }
+      }
+      break;
+    }
   }
 }
 

@@ -1185,7 +1185,7 @@ void applyMpeMode() {
       if (Split[s].midiChanMainEnabled) {
         midiSendMpeState(Split[s].midiChanMain, countMpePolyphony(s));
       }
-      midiSendMpePitchBendRange(s);
+      midiSendPitchBendRange(s);
     }
   }
 }
